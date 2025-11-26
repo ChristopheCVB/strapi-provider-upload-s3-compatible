@@ -43,7 +43,7 @@ const _configSchema = z.object({
 
 export type Config = z.infer<typeof _configSchema>
 
-interface StrapiFile {
+export interface StrapiFile {
   name: string;
   alternativeText?: string;
   caption?: string;
@@ -119,7 +119,9 @@ function init(providerOptions: unknown) {
       if (fileURL.searchParams.has('X-Amz-Date') && fileURL.searchParams.has('X-Amz-Expires')) {
         const xAmzExpires = parseInt(fileURL.searchParams.get('X-Amz-Expires') || '0')
         const xAmzDate = new Date(fileURL.searchParams.get('X-Amz-Date') || '')
-        if (xAmzDate.getTime() + xAmzExpires * 1000 - 60 * 1000 < Date.now()) {
+        const expiresAtTime = xAmzDate.getTime() + xAmzExpires * 1000
+        if (expiresAtTime - 60 * 1000 > Date.now()) { // one minute before expiration
+          // file is not expired
           return { url: file.url }
         }
       }
