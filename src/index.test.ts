@@ -337,6 +337,90 @@ describe('strapi-provider-upload-s3', () => {
 
       await expect(provider.getSignedUrl(file)).rejects.toThrow('Signing failed')
     })
+
+    it('should generate new signed url if signed url is expired', async () => {
+      const provider = init(mockProviderOptions)
+      const pastDate = new Date(Date.now() - 3600 * 1000).toISOString() // 1 hour ago
+      const expiresIn = 1800 // 30 minutes
+      const file = {
+        ...mockFile,
+        url: `https://s3.example.com/test-bucket/uploads/test-hash-123.jpg?X-Amz-Date=${pastDate}&X-Amz-Expires=${expiresIn}`,
+      }
+      const newSignedUrl = 'https://s3.example.com/test-bucket/uploads/test-hash-123.jpg?X-Amz-Signature=new123'
+
+      ;(getSignedUrl as any).mockResolvedValueOnce(newSignedUrl)
+
+      const result = await provider.getSignedUrl(file)
+
+      expect(result.url).toBe(newSignedUrl)
+      expect(getSignedUrl).toHaveBeenCalled()
+    })
+
+    it('should handle URL with missing X-Amz-Expires parameter', async () => {
+      const provider = init(mockProviderOptions)
+      const now = new Date().toISOString()
+      const file = {
+        ...mockFile,
+        url: `https://s3.example.com/test-bucket/uploads/test-hash-123.jpg?X-Amz-Date=${now}`,
+      }
+      const newSignedUrl = 'https://s3.example.com/test-bucket/uploads/test-hash-123.jpg?X-Amz-Signature=new456'
+
+      ;(getSignedUrl as any).mockResolvedValueOnce(newSignedUrl)
+
+      const result = await provider.getSignedUrl(file)
+
+      expect(result.url).toBe(newSignedUrl)
+      expect(getSignedUrl).toHaveBeenCalled()
+    })
+
+    it('should handle URL with missing X-Amz-Date parameter', async () => {
+      const provider = init(mockProviderOptions)
+      const file = {
+        ...mockFile,
+        url: 'https://s3.example.com/test-bucket/uploads/test-hash-123.jpg?X-Amz-Expires=3600',
+      }
+      const newSignedUrl = 'https://s3.example.com/test-bucket/uploads/test-hash-123.jpg?X-Amz-Signature=new789'
+
+      ;(getSignedUrl as any).mockResolvedValueOnce(newSignedUrl)
+
+      const result = await provider.getSignedUrl(file)
+
+      expect(result.url).toBe(newSignedUrl)
+      expect(getSignedUrl).toHaveBeenCalled()
+    })
+
+    it('should handle URL with invalid X-Amz-Date value', async () => {
+      const provider = init(mockProviderOptions)
+      const file = {
+        ...mockFile,
+        url: 'https://s3.example.com/test-bucket/uploads/test-hash-123.jpg?X-Amz-Date=invalid-date&X-Amz-Expires=3600',
+      }
+      const newSignedUrl = 'https://s3.example.com/test-bucket/uploads/test-hash-123.jpg?X-Amz-Signature=newABC'
+
+      ;(getSignedUrl as any).mockResolvedValueOnce(newSignedUrl)
+
+      const result = await provider.getSignedUrl(file)
+
+      expect(result.url).toBe(newSignedUrl)
+      expect(getSignedUrl).toHaveBeenCalled()
+    })
+
+    it('should handle URL with invalid X-Amz-Expires value', async () => {
+      const provider = init(mockProviderOptions)
+      const now = new Date().toISOString()
+      const file = {
+        ...mockFile,
+        url: `https://s3.example.com/test-bucket/uploads/test-hash-123.jpg?X-Amz-Date=${now}&X-Amz-Expires=not-a-number`,
+      }
+      const newSignedUrl = 'https://s3.example.com/test-bucket/uploads/test-hash-123.jpg?X-Amz-Signature=newDEF'
+
+      ;(getSignedUrl as any).mockResolvedValueOnce(newSignedUrl)
+
+      const result = await provider.getSignedUrl(file)
+
+      expect(result.url).toBe(newSignedUrl)
+      expect(getSignedUrl).toHaveBeenCalled()
+    })
   })
 
   describe('isPrivate', () => {
