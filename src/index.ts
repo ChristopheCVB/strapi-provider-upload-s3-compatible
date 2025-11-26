@@ -1,6 +1,7 @@
 import type { ReadStream } from 'node:fs'
 
 import z from 'zod'
+import { joinURL } from 'ufo'
 import { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 
@@ -9,8 +10,10 @@ import packageJson from '../package.json'
 const providerOptionsSchema = z.object({
   accessKey: z.string().min(1),
   secretKey: z.string().min(1),
+  endPoint: z.url(),
+  region: z.string().min(1),
   bucket: z.string().min(1),
-  endPoint: z.string().min(1),
+  forcePathStyle: z.boolean().optional(),
   isPrivate: z.boolean(),
   folder: z.string().min(1),
 })
@@ -64,22 +67,17 @@ interface StrapiFile {
 function init(providerOptions: unknown) {
   const parsedProviderOptions = providerOptionsSchema.parse(providerOptions)
   const s3 = new S3Client({
-    region: 'us-east-1', // MinIO ignores the region but SDK requires it
-    endpoint: `https://${parsedProviderOptions.endPoint}`,
+    endpoint: parsedProviderOptions.endPoint,
+    region: parsedProviderOptions.region,
     credentials: {
       accessKeyId: parsedProviderOptions.accessKey,
       secretAccessKey: parsedProviderOptions.secretKey,
     },
-    forcePathStyle: true, // Important for MinIO
+    forcePathStyle: parsedProviderOptions.forcePathStyle,
   })
 
   const getFileKey = (file: StrapiFile) => {
-    const path = file.path ? `${file.path}/` : ''
-    return `${parsedProviderOptions.folder}/${path}${file.hash}${file.ext}`
-  }
-
-  const getHostPart = () => {
-    return `https://${parsedProviderOptions.endPoint}/`
+    return joinURL(parsedProviderOptions.folder, file.path || '', `${file.hash}${file.ext}`)
   }
 
   return {
@@ -94,7 +92,7 @@ function init(providerOptions: unknown) {
         CacheControl: parsedActionOptions?.cacheControl,
       })
       await s3.send(command)
-      file.url = getHostPart() + parsedProviderOptions.bucket + '/' + fileKey
+      file.url = joinURL(parsedProviderOptions.endPoint, parsedProviderOptions.bucket, fileKey)
     },
 
     uploadStream(file: StrapiFile, actionOptions: unknown = undefined) {
@@ -114,7 +112,7 @@ function init(providerOptions: unknown) {
 
     async getSignedUrl(file: StrapiFile, actionOptions: unknown = undefined): Promise<{ url: string }> {
       const parsedActionOptions = getSignedUrlOptionsSchema.parse(actionOptions)
-      if (!file.url || !file.url.startsWith(getHostPart())) {
+      if (!file.url || !file.url.startsWith(parsedProviderOptions.endPoint)) {
         return { url: file.url }
       }
       const fileURL = new URL(file.url)

@@ -1,12 +1,12 @@
-# Strapi Provider Upload MinIO CE
+# Strapi Provider Upload S3
 
-A Strapi upload provider for MinIO Community Edition. This provider enables Strapi to store and serve media files using MinIO, an S3-compatible object storage server.
+A Strapi upload provider for S3-compatible servers. This provider enables Strapi to store and serve media files using S3-compatible server.
 
 ## Features
 
-- ✅ Upload files to MinIO
+- ✅ Upload files to S3-compatible server
 - ✅ Upload file streams
-- ✅ Delete files from MinIO
+- ✅ Delete files from S3-compatible server
 - ✅ Generate signed URLs for private files
 - ✅ Support for both public and private buckets
 - ✅ TypeScript support
@@ -18,19 +18,19 @@ A Strapi upload provider for MinIO Community Edition. This provider enables Stra
 To use this provider in your Strapi application, configure it in your `config/plugins.ts` file:
 
 ```typescript
-import type { Config as MinioConfig } from 'strapi-provider-upload-minio-ce'
+import type { Config as S3Config } from 'strapi-provider-upload-s3'
 
 export default {
   upload: {
     config: {
-      provider: 'strapi-provider-upload-minio-ce',
+      provider: 'strapi-provider-upload-s3',
       providerOptions: {
-        accessKey: process.env.MINIO_ACCESS_KEY,      // your MinIO access key
-        secretKey: process.env.MINIO_SECRET_KEY,      // your MinIO secret key
-        bucket: process.env.MINIO_BUCKET,             // your MinIO bucket name
-        endPoint: process.env.MINIO_ENDPOINT,         // your MinIO server endpoint (without protocol, e.g., 'api.minio.example.com')
-        isPrivate: process.env.MINIO_IS_PRIVATE === 'true', // true for private, false for public
-        folder: process.env.MINIO_FOLDER || 'strapi', // folder prefix in bucket
+        accessKey: process.env.S3_ACCESS_KEY,            // your S3 access key
+        secretKey: process.env.S3_SECRET_KEY,            // your S3 secret key
+        bucket: process.env.S3_BUCKET,                   // your S3 bucket name
+        endPoint: process.env.S3_ENDPOINT,               // your S3 server endpoint (without protocol, e.g., 'api.s3.example.com')
+        isPrivate: process.env.S3_IS_PRIVATE === 'true', // true for private, false for public
+        folder: process.env.S3_FOLDER || 'strapi',       // folder prefix in bucket
       },
       actionOptions: {
         upload: {
@@ -43,14 +43,14 @@ export default {
           expiresIn: 3600, // optional
         },
       },
-    } satisfies MinioConfig,
+    } satisfies S3Config,
   },
 }
 ```
 
 ## Usage
 
-Once configured, Strapi will automatically use this provider for all file uploads. Files will be stored in MinIO at the path:
+Once configured, Strapi will automatically use this provider for all file uploads. Files will be stored in the server at the path:
 
 ```
 {bucket}/{folder}/{file.path}_{file.hash}{file.ext}
@@ -76,7 +76,7 @@ When `isPrivate` is set to `false`, files are accessible via direct URLs without
 
 ### Requirements
 
-- Node.js >= 24.11.1
+- Node.js >= 20
 - pnpm 10.23.0
 or
 - Volta.sh
