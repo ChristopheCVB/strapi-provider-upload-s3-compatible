@@ -27,8 +27,10 @@ export default {
       providerOptions: {
         accessKey: process.env.S3_ACCESS_KEY,            // your S3 access key
         secretKey: process.env.S3_SECRET_KEY,            // your S3 secret key
-        bucket: process.env.S3_BUCKET,                   // your S3 bucket name
         endPoint: process.env.S3_ENDPOINT,               // your S3 server endpoint (without protocol, e.g., 'api.s3.example.com')
+        region: process.env.S3_REGION,                   // your S3 region
+        bucket: process.env.S3_BUCKET,                   // your S3 bucket name
+        forcePathStyle: process.env.S3_FORCE_PATH_STYLE === 'true', // true for path style, false for virtual hosted-style
         isPrivate: process.env.S3_IS_PRIVATE === 'true', // true for private, false for public
         folder: process.env.S3_FOLDER || 'strapi',       // folder prefix in bucket
       },
