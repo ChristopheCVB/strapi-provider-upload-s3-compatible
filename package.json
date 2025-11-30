@@ -1,6 +1,6 @@
 {
   "name": "strapi-provider-upload-s3",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "A Strapi upload provider for S3-compatible object storage servers",
   "license": "MIT",
   "main": "dist/src/index.js",
