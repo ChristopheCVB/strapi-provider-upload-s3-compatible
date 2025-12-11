@@ -7,15 +7,28 @@ import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 
 import packageJson from '../package.json'
 
-const providerOptionsSchema = z.object({
+const baseProviderOptionsSchema = z.object({
+  endPoint: z.url(),
   accessKey: z.string().min(1),
   secretKey: z.string().min(1),
-  endPoint: z.url(),
-  region: z.string().min(1),
   bucket: z.string().min(1),
-  forcePathStyle: z.boolean().optional(),
-  isPrivate: z.boolean(),
+  region: z.string().min(1),
   folder: z.string().min(1),
+  forcePathStyle: z.boolean().optional(),
+})
+
+// const providerOptionsSchema = z.discriminatedUnion('isPrivate', [
+//   baseProviderOptionsSchema.extend({
+//     isPrivate: z.literal(false),
+//   }),
+//   baseProviderOptionsSchema.extend({
+//     isPrivate: z.literal(true),
+//     storeSignedUrl: z.boolean(),
+//   }),
+// ])
+
+const providerOptionsSchema = baseProviderOptionsSchema.extend({
+  isPrivate: z.boolean(),
 })
 
 const uploadOptionsSchema = z.object({
@@ -104,7 +117,7 @@ function init(providerOptions: unknown) {
       const command = new DeleteObjectCommand({ Bucket: parsedProviderOptions.bucket, Key: fileKey })
       await s3.send(command)
     },
-      
+
     // checkFileSize(file: StrapiFile, { sizeLimit }: { sizeLimit: number }) {
     //   // (optional)
     //   // implement your own file size limit logic

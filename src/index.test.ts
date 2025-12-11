@@ -4,7 +4,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { Readable } from 'node:stream'
 import { S3Client, PutObjectCommand, DeleteObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
-import { init } from './index'
+import { init, type Config } from './index'
 
 // Mock AWS SDK
 vi.mock('@aws-sdk/client-s3', () => {
@@ -23,7 +23,7 @@ vi.mock('@aws-sdk/s3-request-presigner', () => ({
 }))
 
 describe('strapi-provider-upload-s3', () => {
-  const mockProviderOptions = {
+  const mockProviderOptions: Config['providerOptions'] = {
     accessKey: 'test-access-key',
     secretKey: 'test-secret-key',
     endPoint: 'https://s3.example.com',
@@ -430,8 +430,12 @@ describe('strapi-provider-upload-s3', () => {
       expect(provider.isPrivate()).toBe(false)
     })
 
+    // it('should thow error when isPrivate is true and storeSignedUrl is not defined', () => {
+    //   expect(() => init({ ...mockProviderOptions, isPrivate: true })).toThrow()
+    // })
+
     it('should return true when isPrivate is true', () => {
-      const privateOptions = { ...mockProviderOptions, isPrivate: true }
+      const privateOptions: Config['providerOptions'] = { ...mockProviderOptions, isPrivate: true }
       const provider = init(privateOptions)
 
       expect(provider.isPrivate()).toBe(true)

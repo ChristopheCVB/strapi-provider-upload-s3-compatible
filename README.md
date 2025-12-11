@@ -1,11 +1,10 @@
-# Strapi Provider Upload S3
+# Strapi Provider Upload S3 Compatible
 
 A Strapi upload provider for S3-compatible servers. This provider enables Strapi to store and serve media files using S3-compatible server.
 
 ## Features
 
 - ✅ Upload files to S3-compatible server
-- ✅ Upload file streams
 - ✅ Delete files from S3-compatible server
 - ✅ Generate signed URLs for private files
 - ✅ Support for both public and private buckets
@@ -18,21 +17,21 @@ A Strapi upload provider for S3-compatible servers. This provider enables Strapi
 To use this provider in your Strapi application, configure it in your `config/plugins.ts` file:
 
 ```typescript
-import type { Config as S3Config } from 'strapi-provider-upload-s3'
+import type { Config as S3Config } from 'strapi-provider-upload-s3-compatible'
 
 export default {
   upload: {
     config: {
       provider: 'strapi-provider-upload-s3',
       providerOptions: {
+        endPoint: process.env.S3_ENDPOINT,               // your S3 server endpoint (without protocol, e.g., 'api.s3.example.com')
         accessKey: process.env.S3_ACCESS_KEY,            // your S3 access key
         secretKey: process.env.S3_SECRET_KEY,            // your S3 secret key
-        endPoint: process.env.S3_ENDPOINT,               // your S3 server endpoint (without protocol, e.g., 'api.s3.example.com')
         region: process.env.S3_REGION,                   // your S3 region
         bucket: process.env.S3_BUCKET,                   // your S3 bucket name
-        forcePathStyle: process.env.S3_FORCE_PATH_STYLE === 'true', // true for path style, false for virtual hosted-style
         isPrivate: process.env.S3_IS_PRIVATE === 'true', // true for private, false for public
         folder: process.env.S3_FOLDER || 'strapi',       // folder prefix in bucket
+        forcePathStyle: process.env.S3_FORCE_PATH_STYLE === 'true', // true for path style, false for virtual hosted-style
       },
       actionOptions: {
         upload: {
@@ -83,13 +82,6 @@ When `isPrivate` is set to `false`, files are accessible via direct URLs without
 or
 - Volta.sh
 
-## Dependencies
-
-- `@aws-sdk/client-s3` - AWS SDK for S3-compatible operations
-- `@aws-sdk/s3-request-presigner` - Generate presigned URLs
-- `zod` - Runtime type validation
-
 ## License
 
 MIT
-
