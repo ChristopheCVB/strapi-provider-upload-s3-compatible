@@ -24,7 +24,7 @@ export default {
     config: {
       provider: 'strapi-provider-upload-s3',
       providerOptions: {
-        endPoint: process.env.S3_ENDPOINT,               // your S3 server endpoint (without protocol, e.g., 'api.s3.example.com')
+        endPoint: process.env.S3_ENDPOINT,               // your S3 server endpoint
         accessKey: process.env.S3_ACCESS_KEY,            // your S3 access key
         secretKey: process.env.S3_SECRET_KEY,            // your S3 secret key
         region: process.env.S3_REGION,                   // your S3 region
