@@ -1,6 +1,18 @@
-# Strapi Provider Upload S3 Compatible
+<div align="center" width="150px">
+  <img style="width: 150px; height: auto;" src="assets/logo.png" alt="Logo - Strapi Provider Upload S3 Compatible" />
+</div>
+<div align="center">
+  <h1>Strapi Provider Upload S3 Compatible</h1>
+  <p>A Strapi upload provider for S3-compatible servers. This provider enables Strapi to store and serve media files using S3-compatible server.</p>
+  <a href="https://www.npmjs.org/package/strapi-provider-upload-s3-compatible">
+    <img alt="GitHub package.json version" src="https://img.shields.io/github/package-json/v/ChristopheCVB/strapi-provider-upload-s3-compatible?label=npm&logo=npm">
+  </a>
+  <a href="https://www.npmjs.org/package/strapi-provider-upload-s3-compatible">
+    <img src="https://img.shields.io/npm/dm/strapi-provider-upload-s3-compatible.svg" alt="Monthly download on NPM" />
+  </a>
+</div>
 
-A Strapi upload provider for S3-compatible servers. This provider enables Strapi to store and serve media files using S3-compatible server.
+---
 
 ## Features
 

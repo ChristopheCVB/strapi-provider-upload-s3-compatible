@@ -79,7 +79,7 @@ export interface StrapiFile {
 
 function init(providerOptions: unknown) {
   const parsedProviderOptions = providerOptionsSchema.parse(providerOptions)
-  const s3 = new S3Client({
+  const s3Client = new S3Client({
     endpoint: parsedProviderOptions.endPoint,
     region: parsedProviderOptions.region,
     credentials: {
@@ -96,6 +96,7 @@ function init(providerOptions: unknown) {
   return {
     async upload(file: StrapiFile, actionOptions: unknown = undefined) {
       const parsedActionOptions = uploadOptionsSchema.parse(actionOptions)
+
       const fileKey = getFileKey(file)
       const command = new PutObjectCommand({
         Bucket: parsedProviderOptions.bucket,
@@ -104,7 +105,7 @@ function init(providerOptions: unknown) {
         ContentType: file.mime,
         CacheControl: parsedActionOptions?.cacheControl,
       })
-      await s3.send(command)
+      await s3Client.send(command)
       file.url = joinURL(parsedProviderOptions.endPoint, parsedProviderOptions.bucket, fileKey)
     },
 
@@ -115,7 +116,7 @@ function init(providerOptions: unknown) {
     async delete(file: StrapiFile, _actionOptions: unknown = undefined) {
       const fileKey = getFileKey(file)
       const command = new DeleteObjectCommand({ Bucket: parsedProviderOptions.bucket, Key: fileKey })
-      await s3.send(command)
+      await s3Client.send(command)
     },
 
     // checkFileSize(file: StrapiFile, { sizeLimit }: { sizeLimit: number }) {
@@ -125,6 +126,7 @@ function init(providerOptions: unknown) {
 
     async getSignedUrl(file: StrapiFile, actionOptions: unknown = undefined): Promise<{ url: string }> {
       const parsedActionOptions = getSignedUrlOptionsSchema.parse(actionOptions)
+      
       if (!file.url || !file.url.startsWith(parsedProviderOptions.endPoint)) {
         return { url: file.url }
       }
@@ -140,7 +142,7 @@ function init(providerOptions: unknown) {
       }
       const fileKey = getFileKey(file)
       const command = new GetObjectCommand({ Bucket: parsedProviderOptions.bucket, Key: fileKey })
-      const url = await getSignedUrl(s3, command, { expiresIn: parsedActionOptions?.expiresIn })
+      const url = await getSignedUrl(s3Client, command, { expiresIn: parsedActionOptions?.expiresIn })
       return { url }
     },
 
