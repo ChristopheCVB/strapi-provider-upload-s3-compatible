@@ -34,7 +34,7 @@ import type { Config as S3Config } from 'strapi-provider-upload-s3-compatible'
 export default {
   upload: {
     config: {
-      provider: 'strapi-provider-upload-s3',
+      provider: 'strapi-provider-upload-s3-compatible',
       providerOptions: {
         endPoint: process.env.S3_ENDPOINT,               // your S3 server endpoint
         accessKey: process.env.S3_ACCESS_KEY,            // your S3 access key
@@ -65,13 +65,13 @@ export default {
 
 Once configured, Strapi will automatically use this provider for all file uploads. Files will be stored in the server at the path:
 
-```
+```typescript
 {bucket}/{folder}/{file.path}_{file.hash}{file.ext}
 ```
 
 ### Private Files
 
-When `isPrivate` is set to `true`, the provider will generate signed URLs for file access. Signed URLs expire after the configured `expiresIn` period.
+When `isPrivate` is set to `true`, the provider will generate signed URLs for file access. Signed URLs expire after the configured `actionOptions.getSignedUrl.expiresIn` period.
 
 ### Public Files
 
