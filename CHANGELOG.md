@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/ChristopheCVB/strapi-provider-upload-s3-compatible/compare/v1.0.0...v1.0.1) (2025-12-19)
+
+
+### Bug Fixes
+
+* update tsconfig.json to enable declaration files and module interoperability ([9aceba4](https://github.com/ChristopheCVB/strapi-provider-upload-s3-compatible/commit/9aceba4661c7bb9f22406e4414783032369bc048))
+
 ## 1.0.0 (2025-12-19)
 
 
