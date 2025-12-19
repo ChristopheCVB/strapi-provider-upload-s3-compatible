@@ -1,5 +1,5 @@
 name: 'Test'
-description: 'Run type checking, linting and build the project'
+description: 'Run type checking, linting, tests and build the project'
 
 runs:
   using: "composite"
