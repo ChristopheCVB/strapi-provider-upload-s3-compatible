@@ -61,14 +61,6 @@ export default {
 }
 ```
 
-## Usage
-
-Once configured, Strapi will automatically use this provider for all file uploads. Files will be stored in the server at the path:
-
-```typescript
-{bucket}/{folder}/{file.path}_{file.hash}{file.ext}
-```
-
 ### Private Files
 
 When `isPrivate` is set to `true`, the provider will generate signed URLs for file access. Signed URLs expire after the configured `actionOptions.getSignedUrl.expiresIn` period.
