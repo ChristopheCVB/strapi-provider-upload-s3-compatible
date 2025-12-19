@@ -4,6 +4,9 @@
   "exclude": ["**/*.test.ts"],
   "compilerOptions": {
     "strict": true,
+    "declaration": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
     "outDir": "dist"
   }
 }
