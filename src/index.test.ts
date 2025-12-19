@@ -1,3 +1,4 @@
+import type { ReadStream } from 'node:fs'
 import type { StrapiFile } from './index'
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
@@ -7,10 +8,11 @@ import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import { init, type Config } from './index'
 
 // Mock AWS SDK
+const mockS3Send = vi.fn().mockResolvedValue({})
 vi.mock('@aws-sdk/client-s3', () => {
   return {
-    S3Client: vi.fn(function(this: any) {
-      this.send = vi.fn().mockResolvedValue({})
+    S3Client: vi.fn(function(this) {
+      this.send = mockS3Send
     }),
     PutObjectCommand: vi.fn(),
     DeleteObjectCommand: vi.fn(),
@@ -21,6 +23,7 @@ vi.mock('@aws-sdk/client-s3', () => {
 vi.mock('@aws-sdk/s3-request-presigner', () => ({
   getSignedUrl: vi.fn(),
 }))
+const mockedGetSignedUrl = vi.mocked(getSignedUrl)
 
 describe('strapi-provider-upload-s3', () => {
   const mockProviderOptions: Config['providerOptions'] = {
@@ -45,14 +48,8 @@ describe('strapi-provider-upload-s3', () => {
     buffer: Buffer.from('test-data'),
   }
 
-  let mockS3Send: ReturnType<typeof vi.fn>
-
   beforeEach(() => {
     vi.clearAllMocks()
-    mockS3Send = vi.fn().mockResolvedValue({});
-    (S3Client as any).mockImplementation(function(this: any) {
-      this.send = mockS3Send
-    })
   })
 
   afterEach(() => {
@@ -123,7 +120,6 @@ describe('strapi-provider-upload-s3', () => {
         Key: 'uploads/test-hash-123.jpg',
         Body: file.buffer,
         ContentType: file.mime,
-        CacheControl: undefined,
       })
       expect(mockS3Send).toHaveBeenCalledTimes(1)
       expect(file.url).toBe('https://api.s3.example.com/test-bucket/uploads/test-hash-123.jpg')
@@ -132,7 +128,7 @@ describe('strapi-provider-upload-s3', () => {
     it('should upload file with stream', async () => {
       const provider = init(mockProviderOptions)
       const stream = Readable.from(['test-data'])
-      const file = { ...mockFile, stream: stream as any, buffer: undefined }
+      const file = { ...mockFile, stream: stream as ReadStream, buffer: undefined }
 
       await provider.upload(file)
 
@@ -141,7 +137,6 @@ describe('strapi-provider-upload-s3', () => {
         Key: 'uploads/test-hash-123.jpg',
         Body: stream,
         ContentType: file.mime,
-        CacheControl: undefined,
       })
       expect(mockS3Send).toHaveBeenCalledTimes(1)
       expect(file.url).toBe('https://api.s3.example.com/test-bucket/uploads/test-hash-123.jpg')
@@ -158,7 +153,6 @@ describe('strapi-provider-upload-s3', () => {
         Key: 'uploads/subfolder/test-hash-123.jpg',
         Body: file.buffer,
         ContentType: file.mime,
-        CacheControl: undefined,
       })
       expect(mockS3Send).toHaveBeenCalledTimes(1)
       expect(file.url).toBe('https://api.s3.example.com/test-bucket/uploads/subfolder/test-hash-123.jpg')
@@ -276,9 +270,9 @@ describe('strapi-provider-upload-s3', () => {
         ...mockFile,
         url: 'https://api.s3.example.com/test-bucket/uploads/test-hash-123.jpg',
       }
-      const signedUrl = 'https://api.s3.example.com/test-bucket/uploads/test-hash-123.jpg?X-Amz-Signature=abc123';
+      const signedUrl = 'https://api.s3.example.com/test-bucket/uploads/test-hash-123.jpg?X-Amz-Signature=abc123'
 
-      (getSignedUrl as any).mockResolvedValueOnce(signedUrl)
+      mockedGetSignedUrl.mockResolvedValueOnce(signedUrl)
 
       const result = await provider.getSignedUrl(file)
 
@@ -297,9 +291,9 @@ describe('strapi-provider-upload-s3', () => {
         url: 'https://api.s3.example.com/test-bucket/uploads/test-hash-123.jpg',
       }
       const signedUrl = 'https://api.s3.example.com/test-bucket/uploads/test-hash-123.jpg?X-Amz-Signature=abc123'
-      const actionOptions = { expiresIn: 7200 };
+      const actionOptions = { expiresIn: 7200 }
 
-      (getSignedUrl as any).mockResolvedValueOnce(signedUrl)
+      mockedGetSignedUrl.mockResolvedValueOnce(signedUrl)
 
       const result = await provider.getSignedUrl(file, actionOptions)
 
@@ -331,9 +325,9 @@ describe('strapi-provider-upload-s3', () => {
       const file = {
         ...mockFile,
         url: 'https://api.s3.example.com/test-bucket/uploads/test-hash-123.jpg',
-      };
+      }
 
-      (getSignedUrl as any).mockRejectedValueOnce(new Error('Signing failed'))
+      mockedGetSignedUrl.mockRejectedValueOnce(new Error('Signing failed'))
 
       await expect(provider.getSignedUrl(file)).rejects.toThrow('Signing failed')
     })
@@ -346,9 +340,9 @@ describe('strapi-provider-upload-s3', () => {
         ...mockFile,
         url: `https://api.s3.example.com/test-bucket/uploads/test-hash-123.jpg?X-Amz-Date=${pastDate}&X-Amz-Expires=${expiresIn}`,
       }
-      const newSignedUrl = 'https://api.s3.example.com/test-bucket/uploads/test-hash-123.jpg?X-Amz-Signature=new123';
+      const newSignedUrl = 'https://api.s3.example.com/test-bucket/uploads/test-hash-123.jpg?X-Amz-Signature=new123'
 
-      (getSignedUrl as any).mockResolvedValueOnce(newSignedUrl)
+      mockedGetSignedUrl.mockResolvedValueOnce(newSignedUrl)
 
       const result = await provider.getSignedUrl(file)
 
@@ -363,9 +357,9 @@ describe('strapi-provider-upload-s3', () => {
         ...mockFile,
         url: `https://api.s3.example.com/test-bucket/uploads/test-hash-123.jpg?X-Amz-Date=${now}`,
       }
-      const newSignedUrl = 'https://api.s3.example.com/test-bucket/uploads/test-hash-123.jpg?X-Amz-Signature=new456';
+      const newSignedUrl = 'https://api.s3.example.com/test-bucket/uploads/test-hash-123.jpg?X-Amz-Signature=new456'
 
-      (getSignedUrl as any).mockResolvedValueOnce(newSignedUrl)
+      mockedGetSignedUrl.mockResolvedValueOnce(newSignedUrl)
 
       const result = await provider.getSignedUrl(file)
 
@@ -379,9 +373,9 @@ describe('strapi-provider-upload-s3', () => {
         ...mockFile,
         url: 'https://api.s3.example.com/test-bucket/uploads/test-hash-123.jpg?X-Amz-Expires=3600',
       }
-      const newSignedUrl = 'https://api.s3.example.com/test-bucket/uploads/test-hash-123.jpg?X-Amz-Signature=new789';
+      const newSignedUrl = 'https://api.s3.example.com/test-bucket/uploads/test-hash-123.jpg?X-Amz-Signature=new789'
 
-      (getSignedUrl as any).mockResolvedValueOnce(newSignedUrl)
+      mockedGetSignedUrl.mockResolvedValueOnce(newSignedUrl)
 
       const result = await provider.getSignedUrl(file)
 
@@ -395,9 +389,9 @@ describe('strapi-provider-upload-s3', () => {
         ...mockFile,
         url: 'https://api.s3.example.com/test-bucket/uploads/test-hash-123.jpg?X-Amz-Date=invalid-date&X-Amz-Expires=3600',
       }
-      const newSignedUrl = 'https://api.s3.example.com/test-bucket/uploads/test-hash-123.jpg?X-Amz-Signature=newABC';
+      const newSignedUrl = 'https://api.s3.example.com/test-bucket/uploads/test-hash-123.jpg?X-Amz-Signature=newABC'
 
-      (getSignedUrl as any).mockResolvedValueOnce(newSignedUrl)
+      mockedGetSignedUrl.mockResolvedValueOnce(newSignedUrl)
 
       const result = await provider.getSignedUrl(file)
 
@@ -412,9 +406,9 @@ describe('strapi-provider-upload-s3', () => {
         ...mockFile,
         url: `https://api.s3.example.com/test-bucket/uploads/test-hash-123.jpg?X-Amz-Date=${now}&X-Amz-Expires=not-a-number`,
       }
-      const newSignedUrl = 'https://api.s3.example.com/test-bucket/uploads/test-hash-123.jpg?X-Amz-Signature=newDEF';
+      const newSignedUrl = 'https://api.s3.example.com/test-bucket/uploads/test-hash-123.jpg?X-Amz-Signature=newDEF'
 
-      (getSignedUrl as any).mockResolvedValueOnce(newSignedUrl)
+      mockedGetSignedUrl.mockResolvedValueOnce(newSignedUrl)
 
       const result = await provider.getSignedUrl(file)
 
