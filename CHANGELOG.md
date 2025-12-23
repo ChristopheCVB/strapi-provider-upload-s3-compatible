@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.2](https://github.com/ChristopheCVB/strapi-provider-upload-s3-compatible/compare/v1.0.1...v1.0.2) (2025-12-23)
+
+
+### Bug Fixes
+
+* **deps:** update aws-sdk-js-v3 monorepo to ^3.957.0 ([#23](https://github.com/ChristopheCVB/strapi-provider-upload-s3-compatible/issues/23)) ([c607715](https://github.com/ChristopheCVB/strapi-provider-upload-s3-compatible/commit/c607715072189f4354fa1c146c48d8debc5217f1))
+* **deps:** update aws-sdk-js-v3 monorepo to ^3.958.0 ([#27](https://github.com/ChristopheCVB/strapi-provider-upload-s3-compatible/issues/27)) ([01f9543](https://github.com/ChristopheCVB/strapi-provider-upload-s3-compatible/commit/01f954333964e25416d27e751b0c95974a64d8ea))
+
 ## [1.0.1](https://github.com/ChristopheCVB/strapi-provider-upload-s3-compatible/compare/v1.0.0...v1.0.1) (2025-12-19)
 
 
