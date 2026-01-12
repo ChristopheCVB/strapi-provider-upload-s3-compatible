@@ -45,13 +45,13 @@
     "@eslint/js": "^9.39.2",
     "@strapi/typescript-utils": "^5.33.2",
     "@types/node": "^24.10.3",
-    "@vitest/coverage-v8": "4.0.16",
-    "@vitest/ui": "^4.0.16",
+    "@vitest/coverage-v8": "4.0.17",
+    "@vitest/ui": "^4.0.17",
     "eslint": "^9.39.2",
     "globals": "^17.0.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.52.0",
-    "vitest": "^4.0.16"
+    "vitest": "^4.0.17"
   },
   "volta": {
     "node": "24.12.0",
