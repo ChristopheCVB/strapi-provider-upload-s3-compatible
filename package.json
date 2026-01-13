@@ -44,7 +44,7 @@
   "devDependencies": {
     "@eslint/js": "^9.39.2",
     "@strapi/typescript-utils": "^5.33.2",
-    "@types/node": "^24.10.3",
+    "@types/node": "^24.10.8",
     "@vitest/coverage-v8": "4.0.17",
     "@vitest/ui": "^4.0.17",
     "eslint": "^9.39.2",
@@ -54,11 +54,11 @@
     "vitest": "^4.0.17"
   },
   "volta": {
-    "node": "24.12.0",
+    "node": "24.13.0",
     "pnpm": "10.28.0"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=24.13.0"
   },
   "packageManager": "pnpm@10.28.0"
 }
