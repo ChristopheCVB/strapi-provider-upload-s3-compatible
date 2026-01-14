@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
-    "@strapi/typescript-utils": "^5.33.2",
+    "@strapi/typescript-utils": "^5.33.3",
     "@types/node": "^24.10.3",
     "@vitest/coverage-v8": "4.0.17",
     "@vitest/ui": "^4.0.17",
