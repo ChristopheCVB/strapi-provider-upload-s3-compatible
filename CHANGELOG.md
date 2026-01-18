@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.0.2](https://github.com/ChristopheCVB/strapi-provider-upload-s3-compatible/compare/v1.0.1...v1.0.2) (2026-01-18)
+
+
+### Bug Fixes
+
+* **deps:** update aws-sdk-js-v3 monorepo to ^3.957.0 ([#23](https://github.com/ChristopheCVB/strapi-provider-upload-s3-compatible/issues/23)) ([c607715](https://github.com/ChristopheCVB/strapi-provider-upload-s3-compatible/commit/c607715072189f4354fa1c146c48d8debc5217f1))
+* **deps:** update aws-sdk-js-v3 monorepo to ^3.958.0 ([#27](https://github.com/ChristopheCVB/strapi-provider-upload-s3-compatible/issues/27)) ([01f9543](https://github.com/ChristopheCVB/strapi-provider-upload-s3-compatible/commit/01f954333964e25416d27e751b0c95974a64d8ea))
+* **deps:** update aws-sdk-js-v3 monorepo to ^3.962.0 ([#34](https://github.com/ChristopheCVB/strapi-provider-upload-s3-compatible/issues/34)) ([71b4b86](https://github.com/ChristopheCVB/strapi-provider-upload-s3-compatible/commit/71b4b86732fbc0e0abf345cc5152c0f165af4456))
+* **deps:** update aws-sdk-js-v3 monorepo to ^3.964.0 ([#38](https://github.com/ChristopheCVB/strapi-provider-upload-s3-compatible/issues/38)) ([e9183aa](https://github.com/ChristopheCVB/strapi-provider-upload-s3-compatible/commit/e9183aafe0882b725d04b1eeb4010580d2c1b848))
+* **deps:** update aws-sdk-js-v3 monorepo to ^3.966.0 ([#39](https://github.com/ChristopheCVB/strapi-provider-upload-s3-compatible/issues/39)) ([1e505cd](https://github.com/ChristopheCVB/strapi-provider-upload-s3-compatible/commit/1e505cd90a2d7194ddea84ecbd6ee91f4e303311))
+* **deps:** update aws-sdk-js-v3 monorepo to ^3.967.0 ([#44](https://github.com/ChristopheCVB/strapi-provider-upload-s3-compatible/issues/44)) ([a51dfbf](https://github.com/ChristopheCVB/strapi-provider-upload-s3-compatible/commit/a51dfbfba6927bed9ce320cabb6568f26be69dad))
+* **deps:** update aws-sdk-js-v3 monorepo to ^3.968.0 ([#47](https://github.com/ChristopheCVB/strapi-provider-upload-s3-compatible/issues/47)) ([c49b87a](https://github.com/ChristopheCVB/strapi-provider-upload-s3-compatible/commit/c49b87a8c83e240702e0f6d8c3150027b0d484a4))
+* **deps:** update dependency ufo to ^1.6.2 ([#37](https://github.com/ChristopheCVB/strapi-provider-upload-s3-compatible/issues/37)) ([46c542e](https://github.com/ChristopheCVB/strapi-provider-upload-s3-compatible/commit/46c542ec73f12beeacf83d10fa5aecad1367a6ae))
+* **deps:** update dependency ufo to ^1.6.3 ([#50](https://github.com/ChristopheCVB/strapi-provider-upload-s3-compatible/issues/50)) ([943569b](https://github.com/ChristopheCVB/strapi-provider-upload-s3-compatible/commit/943569bb7c857dda926816a46c153f5c18b93aaf))
+* **deps:** update dependency zod to ^4.3.2 ([#31](https://github.com/ChristopheCVB/strapi-provider-upload-s3-compatible/issues/31)) ([501c27a](https://github.com/ChristopheCVB/strapi-provider-upload-s3-compatible/commit/501c27a38cba9838ab898a520cf71e317f80f724))
+* **deps:** update dependency zod to ^4.3.4 ([#32](https://github.com/ChristopheCVB/strapi-provider-upload-s3-compatible/issues/32)) ([c0315c0](https://github.com/ChristopheCVB/strapi-provider-upload-s3-compatible/commit/c0315c0e7149ff6075b1f836ff54481d5afff52c))
+* **deps:** update dependency zod to ^4.3.5 ([#35](https://github.com/ChristopheCVB/strapi-provider-upload-s3-compatible/issues/35)) ([87920c3](https://github.com/ChristopheCVB/strapi-provider-upload-s3-compatible/commit/87920c308d824d1e9d76987bdd4108d0b641f3cd))
+
 ## [1.0.1](https://github.com/ChristopheCVB/strapi-provider-upload-s3-compatible/compare/v1.0.0...v1.0.1) (2025-12-19)
 
 
