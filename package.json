@@ -36,8 +36,8 @@
     "test:coverage": "vitest --coverage"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.994.0",
-    "@aws-sdk/s3-request-presigner": "^3.994.0",
+    "@aws-sdk/client-s3": "^3.995.0",
+    "@aws-sdk/s3-request-presigner": "^3.995.0",
     "ufo": "^1.6.3",
     "zod": "^4.3.6"
   },
