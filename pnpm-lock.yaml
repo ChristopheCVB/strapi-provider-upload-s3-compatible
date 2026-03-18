@@ -25,8 +25,8 @@ importers:
         specifier: ^10.0.1
         version: 10.0.1(eslint@10.0.3)
       '@strapi/typescript-utils':
-        specifier: ^5.38.0
-        version: 5.38.0
+        specifier: ^5.40.0
+        version: 5.40.0
       '@types/node':
         specifier: ^24.11.0
         version: 24.11.0
@@ -810,8 +810,8 @@ packages:
   '@standard-schema/spec@1.0.0':
     resolution: {integrity: sha512-m2bOd0f2RT9k8QJx1JN85cZYyH1RqFBdlwtkSlf4tBDYLCiiZnv1fIIwacK6cqwXavOydf0NPToMQgpKq+dVlA==}
 
-  '@strapi/typescript-utils@5.38.0':
-    resolution: {integrity: sha512-3ejc61Jo9QEMqZOOJem1FEMgHnbOalobNxZVvER6bkbcgMeP4b0/q/wIRJVljge2/PeA8FMiDtQRob01gjFAPQ==}
+  '@strapi/typescript-utils@5.40.0':
+    resolution: {integrity: sha512-zbZw1AIXn0JlgU5cOWngM42QzUFfeZ/EjXBHdM32h6Wa2R2liXnYP3ypYhU9FRLE/78DATokgMgylyGzW0oMkg==}
     engines: {node: '>=20.0.0 <=24.x.x', npm: '>=6.0.0'}
 
   '@types/chai@5.2.3':
@@ -2521,7 +2521,7 @@ snapshots:
 
   '@standard-schema/spec@1.0.0': {}
 
-  '@strapi/typescript-utils@5.38.0':
+  '@strapi/typescript-utils@5.40.0':
     dependencies:
       chalk: 4.1.2
       cli-table3: 0.6.5
